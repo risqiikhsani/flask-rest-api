@@ -21,9 +21,9 @@ class Register(Resource):
         args = register_args.parse_args()
         # Check if the username or email already exists
         if UserModel.query.filter_by(username=args["username"]).first():
-            return jsonify({'message': 'Username already exists'}), 400
+            return {'message': 'Username already exists'}, 400
         if UserModel.query.filter_by(email=args["email"]).first():
-            return jsonify({'message': 'Email already exists'}), 400
+            return {'message': 'Email already exists'}, 400
         
         # Hash the password
         hashed_password = bcrypt.generate_password_hash(args["password"]).decode('utf-8')
@@ -37,7 +37,7 @@ class Register(Resource):
         )
         db.session.add(user)
         db.session.commit()
-        return jsonify({'message': 'User created successfully'}), 201
+        return {'message': 'User created successfully'}, 201
 
 
 class Login(Resource):
@@ -48,6 +48,6 @@ class Login(Resource):
         # Check if the user exists and the password is correct
         if user and bcrypt.check_password_hash(user.password, args["password"]):
             access_token = create_access_token(identity=user.id)
-            return jsonify({'message': 'Login Successful', 'access_token': access_token})
+            return {'message': 'Login Successful', 'access_token': access_token}, 200
         else:
-            return jsonify({'message': 'Login Failed'}), 401
+            return {'message': 'Login Failed'}, 401
