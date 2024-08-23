@@ -17,6 +17,7 @@ todoFields = {
     'user_id': fields.Integer
 }
 
+
 class Todos(Resource):
     @marshal_with(todoFields)
     @jwt_required()

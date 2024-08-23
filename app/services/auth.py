@@ -50,4 +50,4 @@ class Login(Resource):
             access_token = create_access_token(identity=user.id)
             return {'message': 'Login Successful', 'access_token': access_token}, 200
         else:
-            return {'message': 'Login Failed'}, 401
+            return {'message': 'Login Failed, Check username or password'}, 401
