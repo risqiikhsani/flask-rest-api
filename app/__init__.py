@@ -3,10 +3,12 @@ from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 jwt = JWTManager()
 bcrypt = Bcrypt()
+migrate = Migrate() 
 
 def create_app():
     app = Flask(__name__)
@@ -22,6 +24,7 @@ def create_app():
     db.init_app(app)
     jwt.init_app(app)
     bcrypt.init_app(app)
+    migrate.init_app(app, db)
     
     # @jwt.unauthorized_loader
     # def unauthorized_response(callback):
@@ -33,6 +36,6 @@ def create_app():
         from .routes import api_bp
         app.register_blueprint(api_bp)
 
-        db.create_all()
+        # db.create_all()
 
     return app

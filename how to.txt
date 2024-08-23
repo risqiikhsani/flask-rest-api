@@ -1,0 +1,10 @@
+after we use flask-migrate 
+we can do
+
+    flask db init 
+    flask db migrate -m "message"
+    flask db upgrade
+
+
+to run app
+    flask --app app run
