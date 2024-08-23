@@ -1,18 +1,15 @@
-# app/routes.py
-from flask import Blueprint, request, abort, g
+from flask import Blueprint, request, abort
 from flask_restful import Resource, Api, fields, marshal_with, reqparse
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from .. import db
-from ..models import UserModel, TodoModel
+from ..models import TodoModel
 
-
-
-
-
+# Parser for todo fields
 todo_args = reqparse.RequestParser()
 todo_args.add_argument('title', type=str, required=True, help="Title cannot be blank")
 todo_args.add_argument('text', type=str, required=True, help="Text cannot be blank")
-todo_args.add_argument('user_id', type=int, required=True, help="User ID cannot be blank")
 
+# Fields to be serialized
 todoFields = {
     'id': fields.Integer,
     'title': fields.String,
@@ -20,36 +17,42 @@ todoFields = {
     'user_id': fields.Integer
 }
 
-
 class Todos(Resource):
     @marshal_with(todoFields)
+    @jwt_required()
     def get(self):
-        # todos = TodoModel.query.filter_by(user_id=user_id).all()
-        todos = TodoModel.query.all()
+        user_id = get_jwt_identity()
+        todos = TodoModel.query.filter_by(user_id=user_id).all()
         if not todos:
             abort(404, description="No todos found")
         return todos
 
     @marshal_with(todoFields)
+    @jwt_required()
     def post(self):
+        user_id = get_jwt_identity()
         args = todo_args.parse_args()
-        todo = TodoModel(title=args['title'], text=args['text'], user_id=args['user_id'])
+        todo = TodoModel(title=args['title'], text=args['text'], user_id=user_id)
         db.session.add(todo)
         db.session.commit()
         return todo, 201
 
 class Todo(Resource):
     @marshal_with(todoFields)
+    @jwt_required()
     def get(self, id):
-        todo = TodoModel.query.filter_by(id=id).first()
+        user_id = get_jwt_identity()
+        todo = TodoModel.query.filter_by(id=id, user_id=user_id).first()
         if not todo:
             abort(404, description="Todo not found")
         return todo
 
     @marshal_with(todoFields)
+    @jwt_required()
     def put(self, id):
+        user_id = get_jwt_identity()
         args = todo_args.parse_args()
-        todo = TodoModel.query.filter_by(id=id).first()
+        todo = TodoModel.query.filter_by(id=id, user_id=user_id).first()
         if not todo:
             abort(404, description="Todo not found")
         todo.title = args['title']
@@ -58,10 +61,13 @@ class Todo(Resource):
         return todo
 
     @marshal_with(todoFields)
+    @jwt_required()
     def delete(self, id):
-        todo = TodoModel.query.filter_by(id=id).first()
+        user_id = get_jwt_identity()
+        todo = TodoModel.query.filter_by(id=id, user_id=user_id).first()
         if not todo:
             abort(404, description="Todo not found")
         db.session.delete(todo)
         db.session.commit()
         return '', 204
+
