@@ -8,3 +8,7 @@ we can do
 
 to run app
     flask --app app run
+
+
+test app
+    pytest test
