@@ -52,34 +52,34 @@ def test_post_todo(client,  jwt_token):
     assert response.json['title'] == 'Write tests'
     assert response.json['text'] == 'Write unit tests for the API'
 
-# def test_get_single_todo(client, init_database, jwt_token):
-#     response = client.get('/todo/1', headers={'Authorization': f'Bearer {jwt_token}'})
-#     assert response.status_code == 200
-#     assert response.json['title'] == 'first'
+def test_get_single_todo(client, jwt_token):
+    response = client.get('/todo/1', headers={'Authorization': f'Bearer {jwt_token}'})
+    assert response.status_code == 200
+    assert response.json['title'] == 'first'
 
-# def test_get_single_todo_not_found(client, jwt_token):
-#     response = client.get('/todo/999', headers={'Authorization': f'Bearer {jwt_token}'})
-#     assert response.status_code == 404
-#     assert response.json['message'] == 'Todo not found'
+def test_get_single_todo_not_found(client, jwt_token):
+    response = client.get('/todo/999', headers={'Authorization': f'Bearer {jwt_token}'})
+    assert response.status_code == 404
+    assert response.json['message'] == 'Todo not found'
 
-# def test_put_todo(client, init_database, jwt_token):
-#     updated_data = {'title': 'Buy groceries', 'text': 'Get groceries for the week'}
-#     response = client.put('/todo/1', json=updated_data, headers={'Authorization': f'Bearer {jwt_token}'})
-#     assert response.status_code == 200
-#     assert response.json['title'] == 'Buy groceries'
-#     assert response.json['text'] == 'Get groceries for the week'
+def test_put_todo(client, jwt_token):
+    updated_data = {'title': 'Buy groceries', 'text': 'Get groceries for the week'}
+    response = client.put('/todo/1', json=updated_data, headers={'Authorization': f'Bearer {jwt_token}'})
+    assert response.status_code == 200
+    assert response.json['title'] == 'Buy groceries'
+    assert response.json['text'] == 'Get groceries for the week'
 
-# def test_put_todo_not_found(client, jwt_token):
-#     updated_data = {'title': 'Buy groceries', 'text': 'Get groceries for the week'}
-#     response = client.put('/todo/999', json=updated_data, headers={'Authorization': f'Bearer {jwt_token}'})
-#     assert response.status_code == 404
-#     assert response.json['message'] == 'Todo not found'
+def test_put_todo_not_found(client, jwt_token):
+    updated_data = {'title': 'Buy groceries', 'text': 'Get groceries for the week'}
+    response = client.put('/todo/999', json=updated_data, headers={'Authorization': f'Bearer {jwt_token}'})
+    assert response.status_code == 404
+    assert response.json['message'] == 'Todo not found'
 
-# def test_delete_todo(client, init_database, jwt_token):
-#     response = client.delete('/todo/1', headers={'Authorization': f'Bearer {jwt_token}'})
-#     assert response.status_code == 204
+def test_delete_todo(client, jwt_token):
+    response = client.delete('/todo/1', headers={'Authorization': f'Bearer {jwt_token}'})
+    assert response.status_code == 204
 
-# def test_delete_todo_not_found(client, jwt_token):
-#     response = client.delete('/todo/999', headers={'Authorization': f'Bearer {jwt_token}'})
-#     assert response.status_code == 404
-#     assert response.json['message'] == 'Todo not found'
+def test_delete_todo_not_found(client, jwt_token):
+    response = client.delete('/todo/999', headers={'Authorization': f'Bearer {jwt_token}'})
+    assert response.status_code == 404
+    assert response.json['message'] == 'Todo not found'
