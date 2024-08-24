@@ -18,6 +18,8 @@ from app import create_app,db
 def app():
     db_fd, db_path = tempfile.mkstemp()
 
+    # app = create_app({'TESTING': True, 'SQLALCHEMY_DATABASE_URI': f'sqlite:///{db_path}'})
+    
     app = create_app("testing")
 
     with app.app_context():
