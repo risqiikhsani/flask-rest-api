@@ -40,7 +40,7 @@ def jwt_token(app, init_database):
         return access_token
         
 
-def test_get_all_todos(client, init_database, jwt_token):
+def test_get_all_todos(client, jwt_token):
     response = client.get('/todos', headers={'Authorization': f'Bearer {jwt_token}'})
     assert response.status_code == 200
     assert len(response.json) == 2
