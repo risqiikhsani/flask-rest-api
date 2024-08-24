@@ -24,3 +24,13 @@ class TodoModel(db.Model):
 
     def __repr__(self):
         return f"Todo(title = {self.title}, text={self.text})"
+    
+
+class CatModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    color = db.Column(db.String(80), nullable=False)
+    
+    def __repr__(self):
+        return f"Cat(name = {self.name}, age={self.age}, color={self.color})"

@@ -10,8 +10,19 @@ jwt = JWTManager()
 bcrypt = Bcrypt()
 migrate = Migrate() 
 
-def create_app():
+def create_app(env="development"):
     app = Flask(__name__)
+    
+    if env == "development":
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///development.db'
+    elif env == "testing":
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+        app.config['TESTING'] = True
+    elif env == "production":
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://user:password@localhost/production_db'
+
+
+
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'your_strong_secret_key'
