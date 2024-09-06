@@ -4,11 +4,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 db = SQLAlchemy()
 jwt = JWTManager()
 bcrypt = Bcrypt()
 migrate = Migrate() 
+
 
 def create_app(env="development"):
     app = Flask(__name__)
@@ -36,6 +38,8 @@ def create_app(env="development"):
     jwt.init_app(app)
     bcrypt.init_app(app)
     migrate.init_app(app, db)
+    # Configure CORS to allow all origins
+    CORS(app, resources={r"/*": {"origins": "*"}})
     
     # @jwt.unauthorized_loader
     # def unauthorized_response(callback):
