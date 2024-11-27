@@ -51,8 +51,6 @@ def test_post_cat(client):
     assert response.json[0]['age'] == 2
     assert response.json[0]['color'] == 'orange'
     
-    
-
 
 def test_get_single_cat(client, init_database):
     response = client.get('/cat/1')

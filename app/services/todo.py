@@ -6,8 +6,8 @@ from ..models import TodoModel
 
 # Parser for todo fields
 todo_args = reqparse.RequestParser()
-todo_args.add_argument('title', type=str, required=True, help="Title cannot be blank")
-todo_args.add_argument('text', type=str, required=True, help="Text cannot be blank")
+todo_args.add_argument('title', type=str)
+todo_args.add_argument('text', type=str)
 
 # Fields to be serialized
 todoFields = {
@@ -24,8 +24,6 @@ class Todos(Resource):
     def get(self):
         user_id = get_jwt_identity()
         todos = TodoModel.query.filter_by(user_id=user_id).all()
-        if not todos:
-            abort(404, description="No todos found")
         return todos
 
     @marshal_with(todoFields)
@@ -56,8 +54,10 @@ class Todo(Resource):
         todo = TodoModel.query.filter_by(id=id, user_id=user_id).first()
         if not todo:
             abort(404, description="Todo not found")
-        todo.title = args['title']
-        todo.text = args['text']
+        if args["title"]:
+            todo.title = args['title']
+        if args["text"]:
+            todo.text = args['text']
         db.session.commit()
         return todo
 

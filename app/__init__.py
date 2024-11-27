@@ -1,4 +1,5 @@
 # app/__init__.py
+from datetime import timedelta
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
@@ -29,6 +30,7 @@ def create_app(env="development"):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'your_strong_secret_key'
     app.config["JWT_SECRET_KEY"] = 'your_jwt_secret_key'
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
     app.config['JWT_TOKEN_LOCATION'] = ['headers']
     
     # https://github.com/vimalloc/flask-jwt-extended/issues/141#issuecomment-387319917
