@@ -17,7 +17,6 @@ catFields = {
     'color': fields.String
 }
 
-
 class Cats(Resource):
     @marshal_with(catFields)
     def get(self):

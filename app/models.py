@@ -1,5 +1,7 @@
 # app/models.py
-from . import db
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)

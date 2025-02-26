@@ -15,7 +15,6 @@ userFields = {
     'email': fields.String
 }
 
-
 class Users(Resource):
     @marshal_with(userFields)
     def get(self):

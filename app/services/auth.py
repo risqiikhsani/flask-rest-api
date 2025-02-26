@@ -16,6 +16,7 @@ register_args.add_argument('password', type=str, required=True, help="Password c
 register_args.add_argument('email', type=str, required=True, help="Email cannot be blank")
 
 
+
 class Register(Resource):
     def post(self):
         args = register_args.parse_args()
